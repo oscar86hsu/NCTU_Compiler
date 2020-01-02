@@ -2,7 +2,7 @@
 
 **Introduction to Compiler Design by Prof. Yi-Ping You**
 
-Due Date: **23:59, January 13, 2020**
+Due Date: **23:59, January 15, 2020**
 
 Your assignment is to generate `RISC-V instructions` for the **`P`** language based on the `AST` and `symbol table` that you have built in the previous assignments. The generated code will then be executed on a RISC-V simulator, called `Spike`.
 
@@ -553,6 +553,10 @@ riscv64-unknown-elf-gcc -c -S [input C file] -o [output assembly file]
         - /visitor
         - Other modules you may add
     - Other modules you may add
+- /src-c
+	- Sample code of hw4 in C
+- /src-cpp
+	- Sample code of hw4 in C++ (credit: @allen880117)
 - /report
     - `README.md`
 
