@@ -1,9 +1,10 @@
 #pragma once
 
-#include "visitor/visitor.hpp"
 #include <memory>
 #include <string>
 #include <vector>
+#include "visitor/visitor.hpp"
+
 
 #define SAFE_DELETE(NODE)                                                      \
     if ((NODE) != nullptr) {                                                   \
@@ -130,3 +131,4 @@ class ASTNodeBase {
     virtual void accept(class ASTVisitorBase &v) = 0;
     virtual ~ASTNodeBase(){};
 };
+

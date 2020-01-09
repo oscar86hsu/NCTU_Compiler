@@ -421,7 +421,7 @@ void SemanticAnalyzer::visit(PrintNode *m) { // STATEMENT
         return; // No Need Further Check
     }
 
-    if (tmpInfo.type_set != SET_SCALAR) {
+    if (tmpInfo.type_set != SET_SCALAR && tmpInfo.type_set != SET_CONSTANT_LITERAL) {
         this->semantic_error = 1;
         this->error_msg += error_found_msg(m->expression_node->line_number,
                                            m->expression_node->col_number);
