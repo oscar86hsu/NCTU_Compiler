@@ -5,6 +5,7 @@
 #include <vector>
 #include "visitor/visitor.hpp"
 
+
 #define SAFE_DELETE(NODE)                                                      \
     if ((NODE) != nullptr) {                                                   \
         delete (NODE);                                                         \
@@ -130,3 +131,4 @@ class ASTNodeBase {
     virtual void accept(class ASTVisitorBase &v) = 0;
     virtual ~ASTNodeBase(){};
 };
+
