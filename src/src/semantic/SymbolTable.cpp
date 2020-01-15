@@ -35,7 +35,8 @@ SymbolEntry::SymbolEntry(string _name, FieldKind _kind, unsigned int _level,
                          enum EnumNodeTable _node_type,
                          class ProgramNode *_program_node,
                          class VariableNode *_variable_node,
-                         class FunctionNode *_function_node) {
+                         class FunctionNode *_function_node,
+                         int _stack_addr) {
     this->name = name_cut(_name);
     this->kind = _kind;
     this->level = _level;
@@ -45,6 +46,7 @@ SymbolEntry::SymbolEntry(string _name, FieldKind _kind, unsigned int _level,
     this->program_node = _program_node;
     this->variable_node = _variable_node;
     this->function_node = _function_node;
+    this->stack_addr = _stack_addr;
 
     this->is_used = true;
     this->is_arr_decl_error = false;
@@ -78,5 +80,22 @@ bool SymbolTable::redeclare_check(string _name) {
         return false;
     } else {
         return true;
+    }
+}
+
+SymbolEntry SymbolTable::get_entry(string _name) {
+    return this->entry[_name];
+}
+
+bool SymbolTable::check_entry(string _name) {
+    return this->entry[_name].is_used;
+}
+
+int SymbolTable::get_used_tmp()
+{
+    for (int i = 1; i < 16; i++)
+    {
+        if (!this->used_tmp[i])
+            return i;
     }
 }

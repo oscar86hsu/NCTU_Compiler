@@ -1157,14 +1157,23 @@ void dumpAST(ASTNodeBase* node){
 }
 
 int main(int argc, const char *argv[]) {
-    CHECK((argc >= 2) && (argc<=3), "Usage: ./parser <filename> [--dump-ast]\n");
+    CHECK((argc >= 2) && (argc<=4), "Usage: ./compiler <filename> [--dump-ast]\nUsage: ./compiler <filename> [--output_code_dir] <output directory name>\n");
     
-    int isDumpNeed;
+    int isDumpNeed, isOutputDeclared;
+    string output_path;
     if(argc == 3){
         isDumpNeed = strcmp(argv[2], "--dump-ast");
         if(isDumpNeed != 0){
-            fprintf(stderr, "Usage: ./parser <filename> [--dump-ast]\n");
+            fprintf(stderr, "Usage: ./compiler <filename> [--dump-ast]\n");
             exit(-1);                                                          
+        }
+    }
+    else if(argc == 4){
+        isOutputDeclared = strcmp(argv[2], "--output_code_dir");
+        if(isOutputDeclared != 0)
+        {
+            fprintf(stderr, "Usage: ./compiler <filename> [--output_code_dir] <output directory name>\n");
+            exit(-1);
         }
     }
         
@@ -1176,6 +1185,11 @@ int main(int argc, const char *argv[]) {
 
     if(argc == 3 && isDumpNeed == 0)
         dumpAST(AST);
+    if(argc == 4 && isOutputDeclared == 0)
+        output_path += argv[3];
+    else
+        output_path += "./";
+    
 
 	// TODO: construct a SemanticAnalyzer to analyze the AST
     SemanticAnalyzer semantic_analyzer(string(argv[1]), fp);
@@ -1184,11 +1198,15 @@ int main(int argc, const char *argv[]) {
     if(OptDum == 1)
         semantic_analyzer.dump_symbol_table();
     
-    if(semantic_analyzer.is_semantic_error() == 0)
+    
+    if(semantic_analyzer.is_semantic_error() == 0){
+        semantic_analyzer.dump_riscv(output_path);
         printf("\n"
             "|---------------------------------------------|\n"
             "|  There is no syntactic and semantic error!  |\n"
             "|---------------------------------------------|\n");
+    }
+        
     else
         semantic_analyzer.output_err_msg();
 

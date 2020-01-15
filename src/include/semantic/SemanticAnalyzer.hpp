@@ -6,6 +6,7 @@
 #include <stack>
 #include <string>
 #include <vector>
+#include <stack> 
 using namespace std;
 // FIXME: remember to replace ";" below with ";", or your implementations in
 // .cpp won't be compiled.
@@ -35,6 +36,7 @@ class SemanticAnalyzer : public ASTVisitorBase {
 
     class SymbolTable *get_symbol_table();
     void dump_symbol_table();
+    void dump_riscv(string _path);
     void output_err_msg();
     int is_semantic_error();
 
@@ -42,6 +44,7 @@ class SemanticAnalyzer : public ASTVisitorBase {
     class SymbolTable *symbol_table_root;
     class SymbolTable *current_scope;
     unsigned int level;
+    vector<string> global_var, global_const, function, main;
 
     string filename;
     FILE *fp;
@@ -49,6 +52,9 @@ class SemanticAnalyzer : public ASTVisitorBase {
 
     string error_msg;
     int semantic_error;
+    
+    stack<int> tmp_return_value;
+    int loop_num = 0;
 
     // Level Manange
     void level_up();
@@ -76,6 +82,11 @@ class SemanticAnalyzer : public ASTVisitorBase {
     // Dump Symbol Table
     void dump_symbol_table_util(SymbolTable *enter);
 
+    // Dump RISC-V Utils
+    string dump_riscv_util(vector<string> vec, string prefix);
+    string get_function_start_code(string name);
+    string get_function_end_code(string name);
+
     // Other Utils
     bool check_symbol_inside(string _name);
     SymbolEntry get_symbol_entry(string _name);
@@ -86,4 +97,7 @@ class SemanticAnalyzer : public ASTVisitorBase {
     bool check_function_declaration(string _name);
 
     VariableInfo get_function_return_type();
+    string get_const_value(VariableInfo var_info);
+    
+
 };

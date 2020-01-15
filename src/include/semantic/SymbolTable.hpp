@@ -46,6 +46,7 @@ class SymbolEntry {
     unsigned int level;
     VariableInfo type;
     Attribute attribute;
+    int stack_addr;
 
     // Hide Info
     bool is_used;
@@ -62,7 +63,7 @@ class SymbolEntry {
                 VariableInfo _type, Attribute _attribute,
                 enum EnumNodeTable _node_type, class ProgramNode *_program_node,
                 class VariableNode *_variable_node,
-                class FunctionNode *_function_node);
+                class FunctionNode *_function_node, int _stack_addr = 0);
 };
 
 class SymbolTable {
@@ -72,16 +73,23 @@ class SymbolTable {
     enum EnumNodeTable in_node_type;
     VariableInfo in_node_return_type;
     vector<SymbolTable *> next_scope_list;
+    int current_stack_addr = -20;
+    int current_tmp = 0;
+    
 
     // General Info
     unsigned int level;
     map<string, SymbolEntry> entry;
     vector<string> entry_name;
+    bool used_tmp[16] = {false};
 
   public:
     SymbolTable(unsigned int _level);
     ~SymbolTable();
 
     void put(SymbolEntry _symbol_entry);
+    SymbolEntry get_entry(string _name);
     bool redeclare_check(string _name);
+    bool check_entry(string _name);
+    int get_used_tmp();
 };
